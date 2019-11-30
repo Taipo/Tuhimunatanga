@@ -1,0 +1,242 @@
+* {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+html {
+	overflow-y: scroll;
+}
+
+body{
+	background-color:#fff;
+	color:#181818;
+	font-family:"segoe ui","trebuchet MS","Lucida Sans Unicode","Lucida Sans",Sans-Serif;
+	font-size:16px;
+	line-height:24px;
+	margin:0;
+	padding:0;
+	min-height:100%;
+	height:auto!important;
+	height:100%}
+h2,
+h3,
+h4 {
+	line-height: 2;
+}
+
+h2 {
+	font-size: 1.385em;
+
+}
+
+h3 {
+	font-size: 1.231em;
+}
+
+p {
+	line-height: 1.5;
+	margin-bottom: 1em;
+}
+pre {
+	font: 11px/1 Courier New, monospace;
+}
+#taapare_matua{
+	background-color:#F7F7F7;
+	border-bottom:1px solid #ddd;
+	width:100%
+}
+table {
+	border-spacing: 1px;
+}
+td	{
+    border: 1px solid gray;
+    padding: 10px 10px
+}
+a:link,
+a:visited,
+a:active {
+	color: #CBA362;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.takai {
+	margin: 0px auto;
+	max-width: 900px;
+	padding: 0px 8px;
+}
+
+header {
+	background-color: #446D8C;
+	height: 45px;
+	line-height: 34px;
+}
+
+header h1 {
+	color: #fff;
+	float: left;
+	font-size: 1.846em;
+	font-variant: small-caps;
+}
+
+nav {
+	float: right;
+}
+
+nav ul {
+	list-style: none;
+}
+
+nav li {
+	display: inline;
+	margin-left: 13px;
+}
+.hook {
+	display: block;
+	margin: 13px 0;
+}
+ul{
+  margin-left:25px;
+  line-height:16px;
+}
+textarea,
+input[type=text], select {
+  width: 900px;
+  padding: 8px 8px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+button[type=submit] {
+  width: 900px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[type=submit]:hover {
+  background-color: #45a049;
+}
+input[type=kupuhipa] {
+  width: 900px;
+	height: 30px;
+}
+
+select {
+	cursor: pointer;
+	width: 200px;
+}
+li.li1,li.li2 {
+	background:#fff;
+	margin:0 0 0 0px
+}
+.tuhinga  {color:#ACACAC;}
+.tuhinga .imp {font-weight: bold; color: red;}
+.tuhinga .ln {
+	width:1px;
+	text-align:right;
+	margin:0;
+	padding:0 2px;
+	vertical-align:top;
+}
+.tuhinga .ln-xtra, .tuhinga li.ln-xtra, .tuhinga div.ln-xtra {
+	background:#FFFF88;
+}
+.tuhinga span.xtra { display:block; }
+.huri_matau{float:right;text-align:right}
+.pateneiti{
+	background-color:#ddd;
+	border-bottom:2px solid #ccc;
+	border-left:0;
+	border-radius:3px;
+	border-right:0;
+	border-top:0;
+	color:#000;
+	cursor:pointer;
+	display:inline-block;
+	font-family:"segoe ui","trebuchet MS","Lucida Sans Unicode","Lucida Sans",Sans-Serif;
+	font-size:12px;
+	font-weight:400;
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	text-decoration:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	padding:0 6px;
+	opacity:.75;
+	margin:0 0 0 8px
+}
+#taapare_matua{
+	background-color:#F7F7F7;
+	border-bottom:1px solid #ddd;
+	width:100%
+}
+#rohe_taniwha{
+	background-color:#fff;
+	border-bottom:1px solid #ddd;
+	border-left:1px solid #ddd;
+	border-radius:0 0 3px 3px;
+	border-right:1px solid #ddd;
+	margin:25px 0 0
+}
+#rohe_potae{min-width:900px;width:1100px;margin:0 auto}
+textarea{-moz-tab-size:4;-o-tab-size:4;tab-size:4}
+textarea.puta_waihere,textarea.paste_textarea{
+	background-color:#fff;
+	border:1px solid #ddd;
+	border-radius:3px;
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+	box-sizing:border-box;
+	display:block;
+	font-family:Consolas,Menlo,Monaco,"Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace,serif;
+	font-size:13px;
+	height:200px;
+	min-height:200px;
+	line-height:21px;
+	width:100%;
+	margin:0;
+	padding:8px 12px
+}
+.rohepotae_kupu{
+	margin:0 0 10px;
+	padding:0
+}
+
+#patena_waihere{
+	border-bottom:1px solid #ddd;
+	font-size:.85em;
+	background:#F7F7F7;
+	text-align:left;
+	padding:6px 8px 4px
+}
+#rohe_waihere{
+	background-color:#fff;
+	color:#ddd;
+	font-size:12px;
+	overflow:auto;
+	padding:0
+}
+#rohe_waihere2{
+	border:1px solid #ddd;
+	border-radius:3px;
+	margin:0 0 10px
+}
+#rohe_waihere div{
+	color:#333;
+	font-family:Consolas,Menlo,Monaco,"Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace,serif
+}
+ol{
+	color:#ccc;
+	background:#F7F7F7;
+	margin: 0;
+	padding: 0 0 0 55px;
+}
