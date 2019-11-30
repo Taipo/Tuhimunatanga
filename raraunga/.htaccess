@@ -1,0 +1,8 @@
+Options -Indexes
+Options +SymLinksIfOwnerMatch
+ServerSignature off
+<Files ~ "^.*([Ww][Hh][Ii][Rr][Ii][Nn][Gg][Aa]\_[Ww][Hh][Aa][Kk][Aa][Pp][Ii][Rr][Ii]\.[Ii][Nn][Ii])">
+    order allow,deny
+    deny from all
+    satisfy all
+</Files>
