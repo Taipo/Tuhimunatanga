@@ -16,7 +16,6 @@ class Tuhimunatanga {
 	public $kupuhipa_aunoa, $karere_hapa, $haatepe_mutu, $tenei_haatepe, $karere_wetemunahia, $papahono_huri;
 	
 	function Tuhimunatanga() {
-		
 		date_default_timezone_set( 'NZ-CHAT' );
 		$raraunga = new Raraunga();
 		if ( 'POST' == $_SERVER[ 'REQUEST_METHOD' ] ) {
@@ -148,7 +147,7 @@ class Tuhimunatanga {
 		$rarangi 	= $rarangi . $waitohuwaa . $taitapa;
 		#self::taauru_whakapuaki( $rarangi, $kii, $roa_a_kii, $pa, $a, $roa_a_tutohu );
 		$karerehuna_tunukore = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_encrypt( $rarangi, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ), $roa_a_tutohu / 8 ) ) : trim( openssl_encrypt( $rarangi . $waitohuwaa . $taitapa, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
-		$awkm           = hash_hmac( 'sha256', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // Ahuahaatepe Waihere Karere Motuheeheenga a-w-k-m
+		$awkm           = hash_hmac( 'tiger128,4', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // Ahuahaatepe Waihere Karere Motuheeheenga a-w-k-m
 		$taaputa_gcm 	= base64_encode( $tag . $pa . $awkm . $karerehuna_tunukore );
 		$taaputa 	= base64_encode( $pa . $awkm . $karerehuna_tunukore );
 		$taaputa        = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? $taaputa_gcm : $taaputa;
@@ -169,10 +168,10 @@ class Tuhimunatanga {
 		} else $a = null;
 		$tag 		 = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, 0, $roa_a_tutohu ) : '';
 		$pa              = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, $roa_a_tutohu, $roa_a_pa ) : substr( $karerehuna_wete, 0, $roa_a_pa );
-		$awkm            = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, $roa_a_tutohu + $roa_a_pa, $roa_a_awkm = 32 ) : substr( $karerehuna_wete, $roa_a_pa, $roa_a_awkm = 32 );
+		$awkm            = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, $roa_a_tutohu + $roa_a_pa, $roa_a_awkm = 16 ) : substr( $karerehuna_wete, $roa_a_pa, $roa_a_awkm = 16 );
 		$karerehuna_tunukore  = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, $roa_a_tutohu + $roa_a_pa + $roa_a_awkm ) : substr( $karerehuna_wete, $roa_a_pa + $roa_a_awkm );
 		#self::taauru_whakapuaki( $karerehuna_tunukore, $kii, $roa_a_kii, $pa, $a, ( $roa_a_tutohu * 8 ) );
-		$taatai_awkm      = hash_hmac( 'sha256', $karerehuna_tunukore, $kii, $hei_taahuurua = true );			 
+		$taatai_awkm      = hash_hmac( 'tiger128,4', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // ko te huanga o tenei haatepe [tiger128,4], ko te tere, te pototanga me te maro
 		if ( hash_equals( $awkm, $taatai_awkm ) ) { // inatonu te wetemuna, me whakataurite nga haatepe
 		     $papa_kuputuhi    = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ) ) ) : trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
 		     $waitohuwaa_wehehia = self::haatepe_poto( $this->whakahaatepe( 'whirlpool', $kii, false ) );
@@ -190,20 +189,15 @@ class Tuhimunatanga {
 		if ( false === $paanui_ia_tangata ) return self::mau_kii( $roa_a_haatepe ); // mahia ia openssl_random_pseudo_bytes()
 		$haatepe = '';
 		$aho = array_merge( range( '0', '9' ), range( 'A', 'Z' ), range( 'a', 'z' ) );
+		$t_char = count( $aho ) - 1;
 		shuffle( $aho ); // Kaore e pai tenei taumaha mo te Tuhimunatanga
 		for( $x = 0; $x < $roa_a_haatepe; $x++ ) {
-			$haatepe = $haatepe . $aho[ random_int( 0, count( $aho ) - 1 ) ]; // Ko te kaha o tenei tuhimuna ko te random_int() tenei mo te teepu tirohia
+			$rand_int = ( random_int( 0, ( $t_char * 10 ) ) % $t_char ); // Ko te kaha o tenei tuhimuna ko te random_int() tenei mo te teepu tirohia
+			$haatepe = $haatepe . $aho[ $rand_int ];
 			shuffle( $aho );
 		}
 		return $haatepe;
 	}
-    function htmlentities_safe( $input ) {
-        if ( function_exists( 'utf8_encode' ) ) {
-            return htmlentities( utf8_encode( $input ), ENT_HTML5 | ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED ); // PHP 7.2
-         } else {
-            return htmlentities( $input, ENT_HTML5 | ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED, 'UTF-8' ); // PHP 5.4 to 7.1
-         }
-    }	
 	function kore_rtk( $taauru, $reta_tau = false, $waehere = 'UTF-8' ) {
 		return ( ( false !== $reta_tau ) ? preg_replace( "/[^a-zA-Z0-9\/=\s]/i", '', $taauru ) : str_replace( '  ', '&nbsp; ', htmlspecialchars( $taauru ) ) );
 	}
@@ -302,7 +296,7 @@ $Tuhimunatanga = new Tuhimunatanga();
 								<textarea cols="75" name="haatepe" rows="20" id="waehere" style="font-size: 12px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
 								<form action="./?i=<?php echo $Tuhimunatanga->tenei_haatepe; ?>" name="ipupapatono" id="ipupapatono" method="post">
 									<br /><b>Kupuhipa:</b><br />
-									<textarea cols="75" name="kupuhipatuarua" rows="1" id="ipu_kupuhika" style="font-size: 12px; Courier New, monospace"; autofocus></textarea>
+									<textarea cols="75" name="kupuhipatuarua" rows="1" id="ipu_kupuhika" autofocus></textarea>
 									<p><br />
 									<button type="submit" value="Wetemuna">Wetemuna</button>
 									</p>
