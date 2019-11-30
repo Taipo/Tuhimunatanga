@@ -136,7 +136,7 @@ class Tuhimunatanga {
 		$roa_a_kii      = mb_strlen( $kii, '8bit');
 		$pa             = self::mau_pa(); // pere arawhiti
 		if ( !is_null( $a ) && !empty( $a ) ) {
-		  $a 				= hex2bin( $a );
+		  $a 		= hex2bin( $a );
 		} else $a = null;
 		
 		# hanga inati tuuhaahaa
@@ -150,7 +150,7 @@ class Tuhimunatanga {
 		$karerehuna_tunukore = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_encrypt( $rarangi, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ), $roa_a_tutohu / 8 ) ) : trim( openssl_encrypt( $rarangi . $waitohuwaa . $taitapa, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
 		$awkm           = hash_hmac( 'sha256', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // Ahuahaatepe Waihere Karere Motuheeheenga a-w-k-m
 		$taaputa_gcm 	= base64_encode( $tag . $pa . $awkm . $karerehuna_tunukore );
-		$taaputa 		= base64_encode( $pa . $awkm . $karerehuna_tunukore );
+		$taaputa 	= base64_encode( $pa . $awkm . $karerehuna_tunukore );
 		$taaputa        = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? $taaputa_gcm : $taaputa;
 		return $taaputa;		
 	}
@@ -174,7 +174,7 @@ class Tuhimunatanga {
 		#self::taauru_whakapuaki( $karerehuna_tunukore, $kii, $roa_a_kii, $pa, $a, ( $roa_a_tutohu * 8 ) );
 		$taatai_awkm      = hash_hmac( 'sha256', $karerehuna_tunukore, $kii, $hei_taahuurua = true );			 
 		if ( hash_equals( $awkm, $taatai_awkm ) ) { // inatonu te wetemuna, me whakataurite nga haatepe
-			 $papa_kuputuhi    = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ) ) ) : trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
+		     $papa_kuputuhi    = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ) ) ) : trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
 		     $waitohuwaa_wehehia = self::haatepe_poto( $this->whakahaatepe( 'whirlpool', $kii, false ) );
 		     $taitapa_whakawehe = self::haatepe_poto( $this->whakahaatepe( 'sha3-512', $kii, false ) );		
 		     $kuputuhi    = substr( $papa_kuputuhi, 0, strpos( $papa_kuputuhi, $waitohuwaa_wehehia ) );
@@ -235,9 +235,9 @@ class Tuhimunatanga {
 			die( 'HAPA AKMT2: He muhu ke te haatepe papatono.' );
 		if ( $kaute <= 0 || $roa_a_kii <= 0 )
 			die( 'HAPA AKMT2: He muhu ke nga tawhaa.' );
-		$roa_a_haatepe = strlen( hash( $haatepe_papatono, "", true ) );
+		$roa_a_haatepe  = strlen( hash( $haatepe_papatono, "", true ) );
 		$kaute_a_paraka = ceil( $roa_a_kii / $roa_a_haatepe );
-		$taaputa      = "";
+		$taaputa        = "";
 		for ( $i = 1; $i <= $kaute_a_paraka; $i++ ) {
 			// $i whakamuna kei wha paita, piiki mutunga.
 			$mutu = $tote . pack( "N", $i );
