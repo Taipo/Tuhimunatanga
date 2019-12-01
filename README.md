@@ -23,7 +23,7 @@ https://www.taiuru.maori.nz/dictionary-computer-social-media/
 * He kore te paarongo tautuhituhi kei roto i te raraunga
 * Mena kua wareware koe te te waahitau tukutuku, te kupuhipa ranei. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.
 * Mahia te aratau a AES-256-GCM
-* Moka-512 te kahanga o te whakamunatia o nga kii kupuhipa
+* Moka-102.4 te kahanga o te whakamunatia o nga kii kupuhipa
 * Moka-89.31 te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri
 * Ka taea e koe ki te moonehu tou whakapiri
 
