@@ -6,3 +6,8 @@ ServerSignature off
     deny from all
     satisfy all
 </Files>
+<Files ~ "^.*(7776\_[Kk][Uu][Pp][Uu]\.[Dd][Bb])">
+    order allow,deny
+    deny from all
+    satisfy all
+</Files>
