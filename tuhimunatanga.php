@@ -1,7 +1,10 @@
 <?php
 
 #use Taapaetanga\Taapaetanga;
+use Whangaonokupu\Whangaonokupu;
+
 #include "kaatuu_taapaetanga.php";
+include "kaatu_kakano_tupakanoa.php";
 
 require_once( 'raraunga/raraunga.php' );
 
@@ -10,6 +13,8 @@ class Tuhimunatanga {
 	const HAATEPE_ROA = 15;
 	const MOMO_HAATEPE = 'tiger192,4';
 	const TAITAPA = 10000;
+	const KUPU = 8;	
+	const TAIKAI_KUPU = 90;
 	const PAPA_HONO = ''; // waahitau tukutuku o tou pae whakaata
 	
 	public $taitara = 'Whakaaturanga :: Hanga tetehi whakapiri hei haumaru papatono-taupangatanga'; 
@@ -23,7 +28,7 @@ class Tuhimunatanga {
 				// Tekau ma rima te roa o te haatepe o te waahitau tukutuku
 				$haatepe_papahono    = $this->mau_haatepe( static::HAATEPE_ROA, true );
 				// Waru tekau ma ono te roa o te kupuhipa
-				$this->kupuhipa_aunoa = $this->mau_haatepe( 86, true );
+				$this->kupuhipa_aunoa = $this->mau_haatepe( static::KUPU, true, true );
 				// Mau te kiko
 				$karerehuna_hou = $this->kore_rtk( $_POST[ 'haatepe' ], false );
 				// Mau waahikee
@@ -184,9 +189,10 @@ class Tuhimunatanga {
 		     return $waitohuwaa . "\x00" . $kuputuhi;
 		} else throw new Exception( 'Nga Tauwha Muhu: I ngere te hash_equals()' );
 	}
-	function mau_haatepe( $roa_a_haatepe, $paanui_ia_tangata = false ) {
+	function mau_haatepe( $roa_a_haatepe = self::KUPU, $paanui_ia_tangata = false, $whangaono = false ) {
 		mt_srand( $this->kakano_tupokanoa() );
 		if ( false === $paanui_ia_tangata ) return self::mau_kii( $roa_a_haatepe ); // mahia ia openssl_random_pseudo_bytes()
+		if ( false !== $whangaono ) return Whangaonokupu::tu_tepuehu( $roa_a_haatepe );
 		$haatepe = '';
 		$aho = array_merge( range( '0', '9' ), range( 'A', 'Z' ), range( 'a', 'z' ) );
 		$t_char = count( $aho ) - 1;
@@ -278,6 +284,14 @@ $Tuhimunatanga = new Tuhimunatanga();
 			<div id="rohe_potae">
 			<div id="rohe_taniwha">
 					<div class="takai">
+											<H4>WHAKAATURANGA: Hanga he whakapiri hei haumaru papatono-taupangatanga.</H4>
+											<ul>
+												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">Moka-512</a> te kahanga o te whakamunatia o nga kii kupuhipa</li>
+												<li>E <a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">whakamunatia</a> ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
+												<li>Moka-<?php echo Whangaonokupu::mokamoka( Tuhimunatanga::KUPU );?> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
+												<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
+												<li>I taapirihia he taitapa tupurangi.</li>
+											</ul>	
 					<br />
 								<p>
 								<?php if ( 'POST' !== $_SERVER[ 'REQUEST_METHOD' ] && isset( $_GET[ 'i' ] ) && strlen( $_GET[ 'i' ] ) == Tuhimunatanga::HAATEPE_ROA && !isset( $_POST[ 'kupuhipatuarua' ] ) ) {
@@ -286,20 +300,18 @@ $Tuhimunatanga = new Tuhimunatanga();
 											$rarangi      = $raraunga->tiipako( "SELECT `rarangi_huna` FROM `nga_taaurunga` WHERE `haatepe`=" . $whakahaatepe_tukurua );
 											if ( $rarangi !== false ) {
 												if ( !empty( $rarangi ) ) {
-													$aho_whakamunatia = wordwrap( $rarangi[ 0 ][ 'rarangi_huna' ], 72, "\n", true );
+													$aho_whakamunatia = wordwrap( $rarangi[ 0 ][ 'rarangi_huna' ], Tuhimunatanga::TAIKAI_KUPU, "\n", true );
 												} else {
 													$Tuhimunatanga->karere_hapa .= "E hee ana te waahitau tukutuku, ngarongaro tenei tuhinga raanei";
 													$aho_whakamunatia = $Tuhimunatanga->karere_hapa;
 												}
 											}
 								?>
-								<textarea cols="75" name="haatepe" rows="20" id="waehere" style="font-size: 12px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
+								<textarea cols="102" style="width:780px;" name="haatepe" spellcheck="false" rows="20" id="waehere" style="font-size: 16px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
 								<form action="./?i=<?php echo $Tuhimunatanga->tenei_haatepe; ?>" name="ipupapatono" id="ipupapatono" method="post">
 									<br /><b>Kupuhipa:</b><br />
-									<textarea cols="75" name="kupuhipatuarua" rows="1" id="ipu_kupuhika" autofocus></textarea>
-									<p><br />
-									<button type="submit" value="Wetemuna">Wetemuna</button>
-									</p>
+									<textarea class="Kupuhipa" cols="102" style="width:780px;" spellcheck="false" name="kupuhipatuarua" rows="1" id="ipu_kupuhika" autofocus></textarea>
+									<button type="submit" style="width:100px;float:right;" value="Wetemuna">Wetemuna</button>
 								</form>
 								<?php } elseif ( 'POST' == $_SERVER[ 'REQUEST_METHOD' ] && isset( $_POST[ 'kupuhipatuarua' ] ) ) {
 										$waehere_whakamunatia = $Tuhimunatanga->karere_wetemunahia;
@@ -329,25 +341,17 @@ $Tuhimunatanga = new Tuhimunatanga();
 						</div>
 						<br /><h4 id="raraunga">RARAUNGA TAKETAKE</h4><br />
 						<div class="rohepotae_kupu" style="margin-bottom:0">
-										<textarea class="puta_waihere" cols="75" name="haatepe" rows="50" id="waehere" autofocus><?php echo $Tuhimunatanga->karere_wetemunahia; ?></textarea>
+										<textarea class="puta_waihere" cols="120" style="width:100%;" spellcheck="false" name="haatepe" rows="50" id="waehere" autofocus><?php echo $Tuhimunatanga->karere_wetemunahia; ?></textarea>
 										<br /><p align="center"><a href="<?php echo Tuhimunatanga::PAPA_HONO; ?>">Whakapiri Hou</a></p>
 						</div>
 					<?php } elseif ( 'POST' !== $_SERVER[ 'REQUEST_METHOD' ] && !isset( $_GET[ 'i' ] ) && strlen( $Tuhimunatanga->papahono_huri ) == 0 ) { ?>
-											<H4>WHAKAATURANGA: Hanga he whakapiri hei haumaru papatono-taupangatanga.</H4>
-											<ul>
-												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">Moka-512</a> te kahanga o te whakamunatia o nga kii kupuhipa</li>
-												<li>E <a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">whakamunatia</a> ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
-												<li>Moka-89.31 te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
-												<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
-												<li>I taapirihia he taitapa tupurangi.</li>
-											</ul>
 									</p>
 									<form action="./" name="ipupapatono" id="ipupapatono" method="post">
 										<input name="kupuhipa" type="hidden" value="<?php echo $Tuhimunatanga->kupuhipa_aunoa; ?>">
 										<p>
-										<textarea cols="75" name="haatepe" rows="20" id="haatepe" style="font-size: 12px; font-family:verdana"; placeholder="Whakapiri ou tuhinga ki konei" autofocus></textarea>
+										<textarea cols="102" name="haatepe" spellcheck="false" rows="20" id="haatepe" style="font-size: 12px; font-family:verdana"; placeholder="Whakapiri ou tuhinga ki konei" autofocus></textarea>
 										<br />
-										<select name="paunga">
+										<select style="width:780px"; name="paunga">
 											<option value="" disabled selected>Waa Pau</option>
 											<option value="0">Amuri paanui ka tuumata!</option>
 											<option value="600">Tekau Miniti</option>
@@ -357,8 +361,7 @@ $Tuhimunatanga = new Tuhimunatanga();
 											<option value="2635200">Kotahi Marama</option>
 											<option value="31579200">Kotahi Tau</option>
 											<option value="3157920000">Ko Te Mutunga Kore</option>
-										</select><br />
-										<button type="submit" value="Auaha">Auaha</button>
+										</select><button style="width:100px;float:right;"; type="submit" value="Auaha">Auaha</button>
 										</p>
 									</form>
 					<?php } elseif ( isset( $_GET[ 'i' ] ) && strlen( $_GET[ 'i' ] ) <> Tuhimunatanga::HAATEPE_ROA ) {
@@ -366,22 +369,23 @@ $Tuhimunatanga = new Tuhimunatanga();
 							exit( 'Kei te hee te waahitau tukutuku' );
 					} elseif ( 'POST' == $_SERVER[ 'REQUEST_METHOD' ] ) { 
 						if ( strlen( $Tuhimunatanga->papahono_huri ) > 0 ) { ?>
-							<p>
-							Me mohio koe te waahitau tukutuku me te kupuhipa ki te wetemuna i tenei whakapiri.<br /><br />
-							<b>Waahitau Tukutuku:</b><br /><a target=_"blank" href="<?php echo $Tuhimunatanga->papahono_huri; ?>"><?php echo $Tuhimunatanga->papahono_huri; ?></a><br />
 							<?php 
 								$raraunga = new Raraunga();	
 								$rarangi      = $raraunga->tiipako( "SELECT `rarangi_huna` FROM `nga_taaurunga` WHERE `haatepe`=" . $Tuhimunatanga->haatepe_mutu );
 								if ( $rarangi === false ) {
 									die( "E hika! E pakaru ana te raraunga" );
 								} else {
-									$aho_whakamunatia = wordwrap( $rarangi[ 0 ][ 'rarangi_huna' ], 72, "\n", true );
+									$aho_whakamunatia = wordwrap( $rarangi[ 0 ][ 'rarangi_huna' ], Tuhimunatanga::TAIKAI_KUPU, "\n", true );
 								}
 							?>
-					<p><b>Kupuhipa:</b><br />
-					<textarea cols="75" name="haatepe" rows="1" id="kupuhipa" style="font-size: 12px; Courier New, monospace"; autofocus><?php echo $Tuhimunatanga->kupuhipa_aunoa; ?></textarea><br />
-					<button type="Submit" onclick="papatopenga()">Taaura Te Kupuhipa</button></p>
-					<textarea cols="75" name="haatepe" rows="20" id="waehere" style="font-size: 12px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
+							<textarea cols="102" style="width:780px;" name="haatepe" spellcheck="false" rows="20" id="waehere" style="font-size: 12px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
+							<p>Whakatūpato: Kaua e wareware koe te <i>Kiianga Taarehu</i> me te <i>Waahitau Tukutuku</i> ki te wetemuna i tenei whakapiri.<br /><br />
+							<b>Kiianga Taarehu:</b><br />
+							<textarea class="whangaonokupu" style="width:780px;" name="haatepe" spellcheck="false" rows="1" id="kupuhipa" autofocus><?php echo $Tuhimunatanga->kupuhipa_aunoa; ?></textarea>
+							<button type="Submit" style="width:100px;float:right;" onclick="papatopenga()">Taaura</button></p>
+							<p>
+							<b>Waahitau Tukutuku:</b><br /><a target=_"blank" href="<?php echo $Tuhimunatanga->papahono_huri; ?>"><?php echo $Tuhimunatanga->papahono_huri; ?></a></p>
+					</p>
 					<?php }
 					}
 					?>
