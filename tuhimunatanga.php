@@ -117,7 +117,7 @@ class Tuhimunatanga {
 	function huna_whakamuna( $pass ) {
 		if ( phpversion() >= 7.2 ) {
 			$options = [
-				'memory_cost' => 524288, // 1GB of ram
+				'memory_cost' => 524288, // 512MB of ram
 				'time_cost' => 5,
 				'threads' => 3
 			];
