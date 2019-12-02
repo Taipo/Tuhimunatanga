@@ -116,17 +116,24 @@ class Tuhimunatanga {
 	}
 	function huna_whakamuna( $pass ) {
 		if ( phpversion() >= 7.2 ) {
-			$options = [
-				'memory_cost' => 524288, // 512MB of ram
+		return \password_hash(
+			$pass,
+			PASSWORD_ARGON2ID,
+			[
+				'memory_cost' => 1<<19, // 512MB 
 				'time_cost' => 5,
 				'threads' => 3
-			];
-			return password_hash( $pass, PASSWORD_ARGON2I, $options );
+			] );
 		} else {
 			$options = [
-				'cost' => 14,
+				'cost' => 13,
 			];
-			return password_hash( $pass, PASSWORD_BCRYPT, $options );
+			return \password_hash(
+			$pass,
+			PASSWORD_BCRYPT,
+			[
+				'cost' => 13,
+			] );
 		}
 	}
 	function huna_manatoko( $key, $hash ) {
