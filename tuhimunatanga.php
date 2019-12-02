@@ -125,9 +125,6 @@ class Tuhimunatanga {
 				'threads' => 3
 			] );
 		} else {
-			$options = [
-				'cost' => 13,
-			];
 			return \password_hash(
 			$pass,
 			PASSWORD_BCRYPT,
