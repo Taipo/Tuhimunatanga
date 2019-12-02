@@ -1,19 +1,16 @@
 <?php
 
-#use Taapaetanga\Taapaetanga;
 use Whangaonokupu\Whangaonokupu;
 
-#include "kaatuu_taapaetanga.php";
 include "kaatu_kakano_tupakanoa.php";
-
 require_once( 'raraunga/raraunga.php' );
 
 class Tuhimunatanga {
 	
 	const HAATEPE_ROA = 15;
-	const MOMO_HAATEPE = 'tiger192,4';
+	const MOMO_HAATEPE = 'sha3-512';
 	const TAITAPA = 10000;
-	const KUPU = 8;	
+	const KUPU = 8;
 	const TAIKAI_KUPU = 90;
 	const PAPA_HONO = ''; // waahitau tukutuku o tou pae whakaata
 	
@@ -41,15 +38,16 @@ class Tuhimunatanga {
 				$rarangi_karerehuna    = $this->whakamuna( $karerehuna_hou, $this->kupuhipa_aunoa, $taitapa, $this->waahikee );
 				// Whakahaatepe te haatepe
 				$this->haatepe_mutu    = $raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $haatepe_papahono ) );
+
 				// tapiri nga kouki
 				$kupuhipa_huna_mutu = $raraunga->koruki( $rarangi_karerehuna );
+				
 				// whakapae korero raraunga
-				$kupuhipa_aunoa_mutu_raraunga = $raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $haatepe_papahono . $this->kupuhipa_aunoa ) );
+				$kupuhipa_aunoa_mutu_raraunga = $raraunga->koruki( $this->huna_whakamuna( $this->kupuhipa_aunoa ) ); //$raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $haatepe_papahono . $this->kupuhipa_aunoa ) );
+
 				// tiakina ki te raraunga
 				$huahua      = $raraunga->uiui( "INSERT INTO `nga_taaurunga` (`haatepe`,`kupuhipa_huna`,`rarangi_huna`) VALUES (" . $this->haatepe_mutu . "," . $kupuhipa_aunoa_mutu_raraunga . "," . $kupuhipa_huna_mutu . ")" );
 				if ( $huahua === false ) $this->karere_hapa = "E hika! E pakaru ana te raraunga";
-				// whakaraurau mo te ira tangata 
-				#$this->kupuhipa_aunoa = base64_encode( $this->kupuhipa_aunoa );
 			} elseif ( isset( $_POST[ 'kupuhipatuarua' ] ) && strlen( $_POST[ 'kupuhipatuarua' ] ) > 0 ) {
 			} else {
 				header( "Location: " . $this->papahono_huri );
@@ -64,7 +62,7 @@ class Tuhimunatanga {
 				// Whakahaatepe te haatepe
 				$whakahaatepe_tukurua   = $raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $this->tenei_haatepe ) );
 				// Mau te waahitau tukutuku i te raraunga
-				$rarangi      			= $raraunga->tiipako( "SELECT `kupuhipa_huna`,`rarangi_huna` FROM `nga_taaurunga` WHERE `haatepe`=" . $whakahaatepe_tukurua );
+				$rarangi = $raraunga->tiipako( "SELECT `kupuhipa_huna`,`rarangi_huna` FROM `nga_taaurunga` WHERE `haatepe`=" . $whakahaatepe_tukurua );
 				if ( $rarangi === false ) {
 					die( "E hika! E pakaru ana te raraunga" );
 				} elseif ( !empty( $rarangi ) ) {
@@ -73,7 +71,8 @@ class Tuhimunatanga {
 					$this->papahono_huri = self::PAPA_HONO . '?i=' . $this->tenei_haatepe;
 					if ( false === empty( $rarangi_huna ) && isset( $_POST[ 'kupuhipatuarua' ] ) ) {
 						$hanga_kupuhipa = $this->kore_rtk( $_POST[ 'kupuhipatuarua' ], true );
-						if ( $kupuhipa_huna == $this->whakahaatepe( static::MOMO_HAATEPE, $this->tenei_haatepe . $hanga_kupuhipa ) ) { 
+
+						if ( false !== $this->huna_manatoko( $hanga_kupuhipa, $kupuhipa_huna ) ) { 
 							 $waitohuwaa_wehehia = self::haatepe_poto( $this->whakahaatepe( 'whirlpool', $hanga_kupuhipa, false ) );
 							 $this->karere_wetemunahia = $this->wetemuna( $rarangi_huna,  $hanga_kupuhipa );
 							 $mau_waitohuwaa = substr( $this->karere_wetemunahia, 0, 10 );
@@ -115,6 +114,28 @@ class Tuhimunatanga {
 			return $rarangi_haatepe;
 		}
 	}
+	function huna_whakamuna( $pass ) {
+		if ( phpversion() >= 7.2 ) {
+			$options = [
+				'memory_cost' => 524288, // 1GB of ram
+				'time_cost' => 5,
+				'threads' => 3
+			];
+			return password_hash( $pass, PASSWORD_ARGON2I, $options );
+		} else {
+			$options = [
+				'cost' => 14,
+			];
+			return password_hash( $pass, PASSWORD_BCRYPT, $options );
+		}
+	}
+	function huna_manatoko( $key, $hash ) {
+		if ( password_verify( $key, $hash ) ) {
+			return true;
+		} else {
+			return false;
+		}		
+	}
 	public static function tu_aratuka( $block_size = 256, $mode = 'cbc' ) {
 		if ( phpversion() > 7.0 ) $mode = 'gcm';
 		if ( phpversion() < 6 ) {
@@ -145,7 +166,7 @@ class Tuhimunatanga {
 		
 		# hanga inati tuuhaahaa
 		$waitohuwaa_wehehia = self::haatepe_poto( $this->whakahaatepe( 'whirlpool', $pepa, false ) );
-		$taitapa_whakawehe   = self::haatepe_poto( $this->whakahaatepe( 'sha3-512', $pepa, false ) );
+		$taitapa_whakawehe   = self::haatepe_poto( $this->whakahaatepe( static::MOMO_HAATEPE, $pepa, false ) );
 		
 		$waitohuwaa	= $waitohuwaa_wehehia . time() . $waahikee;
 		$taitapa        = $taitapa_whakawehe . openssl_random_pseudo_bytes( $taitapa );
@@ -177,10 +198,11 @@ class Tuhimunatanga {
 		$karerehuna_tunukore  = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? substr( $karerehuna_wete, $roa_a_tutohu + $roa_a_pa + $roa_a_awkm ) : substr( $karerehuna_wete, $roa_a_pa + $roa_a_awkm );
 		#self::taauru_whakapuaki( $karerehuna_tunukore, $kii, $roa_a_kii, $pa, $a, ( $roa_a_tutohu * 8 ) );
 		$taatai_awkm      = hash_hmac( 'tiger128,4', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // ko te huanga o tenei haatepe [tiger128,4], ko te tere, te pototanga me te maro
+ 
 		if ( hash_equals( $awkm, $taatai_awkm ) ) { // inatonu te wetemuna, me whakataurite nga haatepe
 		     $papa_kuputuhi    = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ) ) ) : trim( openssl_decrypt( $karerehuna_tunukore, $karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
 		     $waitohuwaa_wehehia = self::haatepe_poto( $this->whakahaatepe( 'whirlpool', $kii, false ) );
-		     $taitapa_whakawehe = self::haatepe_poto( $this->whakahaatepe( 'sha3-512', $kii, false ) );		
+		     $taitapa_whakawehe = self::haatepe_poto( $this->whakahaatepe( static::MOMO_HAATEPE, $kii, false ) );		
 		     $kuputuhi    = substr( $papa_kuputuhi, 0, strpos( $papa_kuputuhi, $waitohuwaa_wehehia ) );
 		     $x 	  = strpos( $papa_kuputuhi, $waitohuwaa_wehehia );
 		     $y 	  = strpos( $papa_kuputuhi, $taitapa_whakawehe );
@@ -216,7 +238,7 @@ class Tuhimunatanga {
 		if ( false !== $whakatote ) {
 			$pepa = base64_encode( random_bytes( 64 ) );
 		}
-		return hash( $hashtype, $this->akmt2( $hashtype, $taauru, ( ( false !== $whakatote ) ? $pepa : NULL ), 4096, 24, true ) );
+		return hash( $hashtype, hash_pbkdf2( $hashtype, $taauru, ( ( false !== $whakatote ) ? $pepa : NULL ), 24576, 48, true ) );
 	}
 	function momo_aho( $momo_aho ) {
 		if ( is_int( $momo_aho ) ) {
@@ -228,29 +250,6 @@ class Tuhimunatanga {
 		} else {
 			if ( in_array( $momo_aho, hash_algos() ) ) return $momo_aho;
 		}
-	}
-	function akmt2( $haatepe_papatono, $kupuhipa, $tote, $kaute, $roa_a_kii, $huaputa_maori = false ) { //A-Kupuhipa Kii Maataapunatia Taumahi 2 AKMT2 / akmt2
-		$haatepe_papatono = strtolower( $haatepe_papatono );
-		if ( !in_array( $haatepe_papatono, hash_algos(), true ) )
-			die( 'HAPA AKMT2: He muhu ke te haatepe papatono.' );
-		if ( $kaute <= 0 || $roa_a_kii <= 0 )
-			die( 'HAPA AKMT2: He muhu ke nga tawhaa.' );
-		$roa_a_haatepe  = strlen( hash( $haatepe_papatono, "", true ) );
-		$kaute_a_paraka = ceil( $roa_a_kii / $roa_a_haatepe );
-		$taaputa        = "";
-		for ( $i = 1; $i <= $kaute_a_paraka; $i++ ) {
-			// $i whakamuna kei wha paita, piiki mutunga.
-			$mutu = $tote . pack( "N", $i );
-			$mutu = $tapeke_XOR = hash_hmac( $haatepe_papatono, $mutu, $kupuhipa, true );
-			for ( $j = 1; $j < $kaute; $j++ ) {
-				$tapeke_XOR ^= ( $mutu = hash_hmac( $haatepe_papatono, $mutu, $kupuhipa, true ) );
-			}
-			$taaputa .= $tapeke_XOR;
-		}
-		if ( $huaputa_maori )
-			return substr( $taaputa, 0, $roa_a_kii );
-		else
-			return bin2hex( substr( $taaputa, 0, $roa_a_kii ) );
 	}
 	public static function taauru_whakapuaki( $rarangi, $kii, $roa_a_kii, $pa, $a, $roa_a_tutohu  ) {
 		  Taapaetanga::korengia_aho_raanei( $rarangi, 'Me korengia aho-taahuurua raanei te kii whakamuna.' );
@@ -286,9 +285,9 @@ $Tuhimunatanga = new Tuhimunatanga();
 					<div class="takai">
 											<H4>WHAKAATURANGA: Hanga he whakapiri hei haumaru papatono-taupangatanga.</H4>
 											<ul>
-												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">Moka-512</a> te kahanga o te whakamunatia o nga kii kupuhipa</li>
-												<li>E <a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E86)">whakamunatia</a> ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
-												<li>Moka-<?php echo Whangaonokupu::mokamoka( Tuhimunatanga::KUPU );?> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
+												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E15)">Moka-89.31</a> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
+												<li>E whakamunatia ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
+												<li>Moka-<?php echo Whangaonokupu::mokamoka( Tuhimunatanga::KUPU );?> te kahanga of te whangaono kupu</li>
 												<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
 												<li>I taapirihia he taitapa tupurangi.</li>
 											</ul>	
@@ -369,7 +368,7 @@ $Tuhimunatanga = new Tuhimunatanga();
 							exit( 'Kei te hee te waahitau tukutuku' );
 					} elseif ( 'POST' == $_SERVER[ 'REQUEST_METHOD' ] ) { 
 						if ( strlen( $Tuhimunatanga->papahono_huri ) > 0 ) { ?>
-							<?php 
+							<?php
 								$raraunga = new Raraunga();	
 								$rarangi      = $raraunga->tiipako( "SELECT `rarangi_huna` FROM `nga_taaurunga` WHERE `haatepe`=" . $Tuhimunatanga->haatepe_mutu );
 								if ( $rarangi === false ) {
