@@ -2,7 +2,7 @@
 
 Tangata Haututu: @te_taipo
 
-Herenga PHP: 7.0
+Herenga PHP: 7.2
 
 Tenei Putanga: 1.0.0
 
@@ -25,7 +25,7 @@ https://www.taiuru.maori.nz/dictionary-computer-social-media/
 * Mahia te aratau a AES-256-GCM
 * Moka-102.4 te kahanga o te whakamunatia o nga kii kupuhipa
 * Moka-89.31 te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri
-* Ka taea e koe ki te moonehu tou whakapiri
+* Ka taea e koe te whakamoonehu tou whakapiri
 
 == Taautatanga  ==
 
