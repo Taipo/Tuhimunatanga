@@ -38,7 +38,7 @@ CREATE TABLE `nga_taaurunga` (
   `rarangi_huna` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
-2. Whakatakoto tou te paarongo o tou raraunga i roto i te whiringa_whakapiri.ini
+2. Whakatakoto tou te paarongo o tou raraunga i roto i te raraunga/whiringa_whakapiri.ini
 ```
 [raraunga]
 ingoa = 
