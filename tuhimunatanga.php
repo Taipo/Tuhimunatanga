@@ -38,13 +38,10 @@ class Tuhimunatanga {
 				$rarangi_karerehuna    = $this->whakamuna( $karerehuna_hou, $this->kupuhipa_aunoa, $taitapa, $this->waahikee );
 				// Whakahaatepe te haatepe
 				$this->haatepe_mutu    = $raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $haatepe_papahono ) );
-
 				// tapiri nga kouki
 				$kupuhipa_huna_mutu = $raraunga->koruki( $rarangi_karerehuna );
-				
 				// whakapae korero raraunga
-				$kupuhipa_aunoa_mutu_raraunga = $raraunga->koruki( $this->huna_whakamuna( $this->kupuhipa_aunoa ) ); //$raraunga->koruki( $this->whakahaatepe( static::MOMO_HAATEPE, $haatepe_papahono . $this->kupuhipa_aunoa ) );
-
+				$kupuhipa_aunoa_mutu_raraunga = $raraunga->koruki( $this->huna_whakamuna( $this->kupuhipa_aunoa ) );
 				// tiakina ki te raraunga
 				$huahua      = $raraunga->uiui( "INSERT INTO `nga_taaurunga` (`haatepe`,`kupuhipa_huna`,`rarangi_huna`) VALUES (" . $this->haatepe_mutu . "," . $kupuhipa_aunoa_mutu_raraunga . "," . $kupuhipa_huna_mutu . ")" );
 				if ( $huahua === false ) $this->karere_hapa = "E hika! E pakaru ana te raraunga";
