@@ -113,14 +113,19 @@ class Tuhimunatanga {
 	}
 	function huna_whakamuna( $pass ) {
 		if ( phpversion() >= 7.2 ) {
-		return \password_hash(
-			$pass,
-			( ( phpversion() > 7.2 ) ? PASSWORD_ARGON2ID : PASSWORD_ARGON2I ),
-			[
-				'memory_cost' => 1<<19, // 512MB 
-				'time_cost' => 5,
-				'threads' => 3
-			] );
+			if ( function_exists( 'sodium_crypto_pwhash_str' ) ) {
+				return \sodium_crypto_pwhash_str( $pass,
+					SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
+					SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE );	
+			} else
+				return \password_hash(
+				$pass,
+				( ( phpversion() > 7.2 ) ? PASSWORD_ARGON2ID : PASSWORD_ARGON2I ),
+				[
+					'memory_cost' => 1<<19, // 512MB 
+					'time_cost' => 5,
+					'threads' => 3
+				] );
 		} else {
 			return \password_hash(
 			$pass,
