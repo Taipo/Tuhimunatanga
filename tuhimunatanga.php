@@ -115,7 +115,7 @@ class Tuhimunatanga {
 		if ( phpversion() >= 7.2 ) {
 		return \password_hash(
 			$pass,
-			PASSWORD_ARGON2ID,
+			( ( phpversion() > 7.2 ) ? PASSWORD_ARGON2ID : PASSWORD_ARGON2I ),
 			[
 				'memory_cost' => 1<<19, // 512MB 
 				'time_cost' => 5,
