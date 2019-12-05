@@ -136,7 +136,7 @@ class Tuhimunatanga {
 		}
 	}
 	function huna_manatoko( $key, $hash ) {
-		if ( function_exists( 'sodium_crypto_pwhash_str' ) ) {
+		if ( function_exists( 'sodium_crypto_pwhash_str_verify' ) ) {
 			if ( sodium_crypto_pwhash_str_verify( $hash, $key ) ) {
 				return true;
 			} else {
