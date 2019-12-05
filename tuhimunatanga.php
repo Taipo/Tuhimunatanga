@@ -115,8 +115,8 @@ class Tuhimunatanga {
 		if ( phpversion() >= 7.2 ) {
 			if ( function_exists( 'sodium_crypto_pwhash_str' ) ) {
 				return sodium_crypto_pwhash_str( $k_muna,
-					SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-					SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE );	
+					SODIUM_CRYPTO_PWHASH_OPSLIMIT_SENSITIVE,
+					SODIUM_CRYPTO_PWHASH_MEMLIMIT_SENSITIVE );	
 			} else
 				return password_hash(
 				$k_muna,
