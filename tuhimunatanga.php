@@ -111,15 +111,15 @@ class Tuhimunatanga {
 			return $rarangi_haatepe;
 		}
 	}
-	function huna_whakamuna( $pass ) {
+	function huna_whakamuna( $k_muna ) {
 		if ( phpversion() >= 7.2 ) {
 			if ( function_exists( 'sodium_crypto_pwhash_str' ) ) {
-				return sodium_crypto_pwhash_str( $pass,
+				return sodium_crypto_pwhash_str( $k_muna,
 					SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
 					SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE );	
 			} else
 				return password_hash(
-				$pass,
+				$k_muna,
 				( ( phpversion() > 7.2 ) ? PASSWORD_ARGON2ID : PASSWORD_ARGON2I ),
 				[
 					'memory_cost' => 1<<19, // 512MB 
@@ -128,7 +128,7 @@ class Tuhimunatanga {
 				] );
 		} else {
 			return password_hash(
-			$pass,
+			$k_muna,
 			PASSWORD_BCRYPT,
 			[
 				'cost' => 13,
@@ -188,7 +188,7 @@ class Tuhimunatanga {
 		$karerehuna_tunukore = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? trim( openssl_encrypt( $rarangi, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa, $tag, ( null === $a ? '' : $a ), $roa_a_tutohu / 8 ) ) : trim( openssl_encrypt( $rarangi . $waitohuwaa . $taitapa, $momo_karerehuna, $kii, OPENSSL_RAW_DATA, $pa ) );
 		$awkm           = hash_hmac( 'tiger128,4', $karerehuna_tunukore, $kii, $hei_taahuurua = true ); // Ahuahaatepe Waihere Karere Motuheeheenga a-w-k-m
 		$taaputa_gcm 	= base64_encode( $tag . $pa . $awkm . $karerehuna_tunukore );
-		$taaputa 	= base64_encode( $pa . $awkm . $karerehuna_tunukore );
+		$taaputa 		= base64_encode( $pa . $awkm . $karerehuna_tunukore );
 		$taaputa        = ( false !== strpos( self::tu_aratuka(), 'gcm' ) ) ? $taaputa_gcm : $taaputa;
 		return $taaputa;		
 	}
@@ -222,7 +222,7 @@ class Tuhimunatanga {
 		     $waitohuwaa  = trim( substr( $papa_kuputuhi, $x + 9, $y - ( $x + 9 ) ) );
 		     $waitohuwaa  = preg_replace( "/[^0-9]/i", '', $waitohuwaa );
 		     return $waitohuwaa . "\x00" . $kuputuhi;
-		} else throw new Exception( 'Nga Tauwha Muhu: I ngere te hash_equals()' );
+		} else throw new Exception( 'Nga Tauwha Muhu: Kei te hee te rerenga whangaono' );
 	}
 	function mau_haatepe( $roa_a_haatepe = self::KUPU, $paanui_ia_tangata = false, $whangaono = false ) {
 		mt_srand( $this->kakano_tupokanoa() );
