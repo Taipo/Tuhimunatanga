@@ -135,26 +135,26 @@ class Tuhimunatanga {
 			] );
 		}
 	}
-	function huna_manatoko( $key, $hash ) {
+	function huna_manatoko( $kii, $haatepe ) {
 		if ( function_exists( 'sodium_crypto_pwhash_str_verify' ) ) {
-			if ( sodium_crypto_pwhash_str_verify( $hash, $key ) ) {
+			if ( sodium_crypto_pwhash_str_verify( $haatepe, $kii ) ) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-		if ( password_verify( $key, $hash ) ) {
+		if ( password_verify( $kii, $haatepe ) ) {
 			return true;
 		} else {
 			return false;
 		}		
 	}
-	public static function tu_aratuka( $block_size = 256, $mode = 'cbc' ) {
+	public static function tu_aratuka( $rahi_paraka = 256, $mode = 'cbc' ) {
 		if ( phpversion() > 7.0 ) $mode = 'gcm';
 		if ( phpversion() < 6 ) {
 		  throw new Exception( 'Insecure version of PHP!' );
 		}
-		return 'aes-' . $block_size . '-' . $mode;
+		return 'aes-' . $rahi_paraka . '-' . $mode;
 	}
 	public static function mau_kii( $roa_a_haatepe = 32 ) {
 	  for( $x=0; $x<=100; $x++ ) {
@@ -247,11 +247,11 @@ class Tuhimunatanga {
 		return abs( crc32( $this->whakahaatepe( static::MOMO_HAATEPE, ( hexdec( substr( microtime(), -8 ) ) & 0x7fffffff ), true ) ) );
 	}
 	function whakahaatepe( $momo_aho, $taauru, $whakatote = false ) {
-		$hashtype = $this->momo_aho( $momo_aho );
+		$momo_haatepe = $this->momo_aho( $momo_aho );
 		if ( false !== $whakatote ) {
 			$pepa = base64_encode( random_bytes( 64 ) );
 		}
-		return hash( $hashtype, hash_pbkdf2( $hashtype, $taauru, ( ( false !== $whakatote ) ? $pepa : NULL ), 24576, 48, true ) );
+		return hash( $momo_haatepe, hash_pbkdf2( $momo_haatepe, $taauru, ( ( false !== $whakatote ) ? $pepa : NULL ), 24576, 48, true ) );
 	}
 	function momo_aho( $momo_aho ) {
 		if ( is_int( $momo_aho ) ) {
