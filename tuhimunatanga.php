@@ -136,6 +136,13 @@ class Tuhimunatanga {
 		}
 	}
 	function huna_manatoko( $key, $hash ) {
+		if ( function_exists( 'sodium_crypto_pwhash_str' ) ) {
+			if ( sodium_crypto_pwhash_str_verify( $hash, $key ) ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 		if ( password_verify( $key, $hash ) ) {
 			return true;
 		} else {
