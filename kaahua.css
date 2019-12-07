@@ -94,7 +94,7 @@ nav li {
 	display: block;
 	margin: 13px 0;
 }
-ul{
+ul {
   margin-left:25px;
   line-height:16px;
 }
@@ -266,8 +266,7 @@ textarea.puta_waihere,textarea.paste_textarea{
 	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
 }
 ol{
-	color:#ccc;
-	background:#F7F7F7;
 	margin: 0;
-	padding: 0 0 0 55px;
+  margin-left:25px;
+  line-height:16px;	
 }
