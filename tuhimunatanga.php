@@ -21,14 +21,16 @@ class Tuhimunatanga {
 	function Tuhimunatanga() {
 		date_default_timezone_set( 'NZ-CHAT' );
 		$raraunga = new Raraunga();
+
+		$this->kupu_katoa = static::KUPU;
+		if ( $this->kupu_katoa > 10 ) $this->kupu_katoa = 10;
+		if ( $this->kupu_katoa < 7 ) $this->kupu_katoa = 7;		
+
 		if ( 'POST' == $_SERVER[ 'REQUEST_METHOD' ] ) {
 			if ( isset( $_POST[ 'haatepe' ] ) && isset( $_POST[ 'kupuhipa' ] ) && isset( $_POST[ 'paunga' ] ) && strlen( $_POST[ 'haatepe' ] ) > 3 ) {
 				// Tekau ma rima te roa o te haatepe o te waahitau tukutuku
 				$haatepe_papahono    = $this->mau_haatepe( static::HAATEPE_ROA, true );
 				// Waru tekau ma ono te roa o te kupuhipa
-				$this->kupu_katoa = static::KUPU;
-				if ( $this->kupu_katoa > 10 ) $this->kupu_katoa = 10;
-				if ( $this->kupu_katoa < 7 ) $this->kupu_katoa = 7;
 				$this->kupuhipa_aunoa = $this->mau_haatepe( $this->kupu_katoa, true, true );
 				// Mau te kiko
 				$karerehuna_hou = $this->kore_rtk( $_POST[ 'haatepe' ], false );
