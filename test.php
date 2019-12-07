@@ -27,7 +27,7 @@ $Tuhimunatanga = new Tuhimunatanga();
 											<ul>
 												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E15)">Moka-89.31</a> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
 												<li>E whakamunatia ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
-												<li>Moka-<?php echo Whangaonokupu::mokamoka( Tuhimunatanga::KUPU );?> te kahanga of te whangaono kupu</li>
+												<li>Moka-<?php echo Whangaonokupu::mokamoka( $Tuhimunatanga->kupu_katoa );?> te kahanga of te whangaono kupu</li>
 												<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
 												<li>I taapirihia he taitapa tupurangi.</li>
 											</ul>	
@@ -70,8 +70,7 @@ $Tuhimunatanga = new Tuhimunatanga();
 												foreach ( $huaanga_waehere_whakamunatia as $nama_rarangi => $rarangi )  {
 												  $nama_rarangi = ( $nama_rarangi + 1 );
 												  echo "<li class=\"li1\"><div class=\"de1\">" . $rarangi . "</div></li>\n";
-												}		
-											//{$nama_rarangi}
+												}
 										?>
 										</ol>
 								</div>
@@ -119,10 +118,17 @@ $Tuhimunatanga = new Tuhimunatanga();
 							<textarea cols="102" style="width:780px;" name="haatepe" spellcheck="false" rows="20" id="waehere" style="font-size: 12px; Courier New, monospace"; autofocus><?php if ( isset( $aho_whakamunatia ) ) echo $aho_whakamunatia; ?></textarea>
 							<p>Whakatūpato: Kaua e wareware koe te <i>Kiianga Taarehu</i> me te <i>Waahitau Tukutuku</i> ki te wetemuna i tenei whakapiri.<br /><br />
 							<b>Kiianga Taarehu:</b><br />
-							<textarea class="whangaonokupu" style="width:780px;" name="haatepe" spellcheck="false" rows="1" id="kupuhipa" autofocus><?php echo $Tuhimunatanga->kupuhipa_aunoa; ?></textarea>
+							<textarea class="whangaonokupu" style="width:780px;" name="haatepe" spellcheck="false" id="kupuhipa" rows="1" autofocus><?php echo $Tuhimunatanga->kupuhipa_aunoa; ?></textarea>
 							<button type="Submit" onclick="papatopenga()">Taaura</button></p>
-							<p>
-							<b>Waahitau Tukutuku:</b><br /><a target=_"blank" href="<?php echo $Tuhimunatanga->papahono_huri; ?>"><?php echo $Tuhimunatanga->papahono_huri; ?></a></p>
+							<div id="rarangi_kupu">
+								<?php if ( isset( $Tuhimunatanga->rarangi_kupu ) ) { ?>
+								He tumomo tauira o nga kupu whangaono (he taonganui mo te maumaharatanga):<br />
+								<?php echo $Tuhimunatanga->rarangi_kupu;
+								} ?>
+								
+							</div>
+							<br />
+							<p><b>Waahitau Tukutuku:</b><br /><a target=_"blank" href="<?php echo $Tuhimunatanga->papahono_huri; ?>"><?php echo $Tuhimunatanga->papahono_huri; ?></a></p>
 					</p>
 					<?php }
 					}
