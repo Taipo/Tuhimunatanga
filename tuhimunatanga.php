@@ -123,16 +123,16 @@ class Tuhimunatanga {
 		$k_roa = count( $k );
 		$k_mutu = array();
 		$nga_kupu = array( 0 => array( 'Kua', 'I', 'E', 'He', 'Ka' ),
-						   1 => array( 'te', 'te', 'ana te', 'nga', 'tetahi' ),
-						   2 => array( 'ki', 'o', 'o', 'i te', 'ki' ),
-						   3 => array( 'o', 'nga', 'i runga i te', 'hei', 'o te' ),
-						   4 => array( 'nga', 'i', 'o', 'i te', 'ka' ),
-						   5 => array( 'te', 'te', 'hei', 'o', 'ki' ),
-						   6 => array( 'o', 'aa', 'ki', 'ara te', 'ona' ),
-						   7 => array( 'ta', 'i te', 'aa', 'iro te', 'ki' ),
-						   8 => array( 'ki', 'ka', 'e', 'aa', 'ai' ),
-						   9 => array( 'a', 'te', 'ana', 'nei', 'ake' )
-						   );
+				   1 => array( 'te', 'te', 'ana te', 'nga', 'tetahi' ),
+				   2 => array( 'ki', 'o', 'o', 'i te', 'ki' ),
+				   3 => array( 'o', 'nga', 'i runga i te', 'hei', 'o te' ),
+				   4 => array( 'nga', 'i', 'o', 'i te', 'ka' ),
+				   5 => array( 'te', 'te', 'hei', 'o', 'ki' ),
+				   6 => array( 'o', 'aa', 'ki', 'ara te', 'ona' ),
+				   7 => array( 'ta', 'i te', 'aa', 'iro te', 'ki' ),
+				   8 => array( 'ki', 'ka', 'e', 'aa', 'ai' ),
+				   9 => array( 'a', 'te', 'ana', 'nei', 'ake' )
+				 );
 		$nga_kupu = $this->riwhiriwhi( $nga_kupu );
 		$r = random_int( 0, 4 );
 		for( $x = 0; $x < $k_roa; $x++ ) {
