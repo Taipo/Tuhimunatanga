@@ -16,6 +16,7 @@ class Tuhimunatanga {
 	
 	public $taitara = 'Whakaaturanga :: Hanga tetehi whakapiri hei haumaru papatono-taupangatanga'; 
 	public $kupuhipa_aunoa, $karere_hapa, $haatepe_mutu, $tenei_haatepe, $karere_wetemunahia, $papahono_huri;
+	public $kupu_katoa;
 	
 	function Tuhimunatanga() {
 		date_default_timezone_set( 'NZ-CHAT' );
@@ -25,7 +26,10 @@ class Tuhimunatanga {
 				// Tekau ma rima te roa o te haatepe o te waahitau tukutuku
 				$haatepe_papahono    = $this->mau_haatepe( static::HAATEPE_ROA, true );
 				// Waru tekau ma ono te roa o te kupuhipa
-				$this->kupuhipa_aunoa = $this->mau_haatepe( static::KUPU, true, true );
+				$this->kupu_katoa = static::KUPU;
+				if ( $this->kupu_katoa > 10 ) $this->kupu_katoa = 10;
+				if ( $this->kupu_katoa < 7 ) $this->kupu_katoa = 7;
+				$this->kupuhipa_aunoa = $this->mau_haatepe( $this->kupu_katoa, true, true );
 				// Mau te kiko
 				$karerehuna_hou = $this->kore_rtk( $_POST[ 'haatepe' ], false );
 				// Mau waahikee
@@ -45,6 +49,9 @@ class Tuhimunatanga {
 				// tiakina ki te raraunga
 				$huahua      = $raraunga->uiui( "INSERT INTO `nga_taaurunga` (`haatepe`,`kupuhipa_huna`,`rarangi_huna`) VALUES (" . $this->haatepe_mutu . "," . $kupuhipa_aunoa_mutu_raraunga . "," . $kupuhipa_huna_mutu . ")" );
 				if ( $huahua === false ) $this->karere_hapa = "E hika! E pakaru ana te raraunga";
+				
+				$this->rarangi_kupu = str_replace( '  ', ' ', implode( ' ' , $this->whakaraarangi( $this->kupuhipa_aunoa ) ) );
+				
 			} elseif ( isset( $_POST[ 'kupuhipatuarua' ] ) && strlen( $_POST[ 'kupuhipatuarua' ] ) > 0 ) {
 			} else {
 				header( "Location: " . $this->papahono_huri );
@@ -109,6 +116,42 @@ class Tuhimunatanga {
 			}
 			return $rarangi_haatepe;
 		}
+	}
+	// poroka hauhau aumiha rara harare haerenga aorere
+	function whakaraarangi( $k ) {
+		$k = explode( ' ', $k );
+		$k_roa = count( $k );
+		$k_mutu = array();
+		$nga_kupu = array( 0 => array( 'Kua', 'I', 'E', 'He', 'Ka' ),
+						   1 => array( 'te', 'te', 'ana te', 'nga', 'tetahi' ),
+						   2 => array( 'ki', 'o', 'o', 'i te', 'ki' ),
+						   3 => array( 'o', 'nga', 'i runga i te', 'hei', 'o te' ),
+						   4 => array( 'nga', 'i', 'o', 'i te', 'ka' ),
+						   5 => array( 'te', 'te', 'hei', 'o', 'ki' ),
+						   6 => array( 'o', 'aa', 'ki', 'ara te', 'ona' ),
+						   7 => array( 'ta', 'i te', 'aa', 'iro te', 'ki' ),
+						   8 => array( 'ki', 'ka', 'e', 'aa', 'ai' ),
+						   9 => array( 'a', 'te', 'ana', 'nei', 'ake' )
+						   );
+		$nga_kupu = $this->riwhiriwhi( $nga_kupu );
+		$r = random_int( 0, 4 );
+		for( $x = 0; $x < $k_roa; $x++ ) {
+			$k_mutu[] = ' <font size="3" face="Courier New" color="#CCCCCC">' . $nga_kupu[ $x ][ $r ] . '</font> ';
+			$k_mutu[] = ' <font size="4" face="Courier New" color="#737373">' . $k[ $x ] . '</font> ';
+		}
+		return $k_mutu;
+	}
+	function riwhiriwhi( $r ) {
+		$t_r = array();
+		for( $x = 0; $x < ( count( $r ) ); $x++ ) {
+			if ( $x == 3 || $x == 4 || $x == 6 || $x == 8 ) {
+				$tenei_r = $r[ $x ];
+				shuffle( $tenei_r );
+				$r[ $x ] = $tenei_r;
+			}
+			$t_r[ $x ] = $r[ $x ];
+		}
+		return $t_r;
 	}
 	function huna_whakamuna( $k_muna ) {
 		if ( phpversion() >= 7.2 ) {
