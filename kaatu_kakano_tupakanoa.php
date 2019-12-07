@@ -31,7 +31,7 @@ class Whangaonokupu {
 		return $_kupu_muna;
     }
 	public static function mokamoka( $kupu = self::KUPU ) {
-		return round( ( static::taupu_koari( pow( self::KUPU_KATOA, $kupu ) / 2 ) ), 2 );
+		return round( ( static::taupu_koari( pow( self::KUPU_KATOA, ( int ) $kupu ) / 2 ) ), 2 );
 	}
     public function whangatekau() {
 		$naama = '';
