@@ -30,8 +30,8 @@ class Whangaonokupu {
 		$_kupu_muna = trim( $_kupu_muna );
 		return $_kupu_muna;
     }
-	public static function mokamoka( $kupu = self::KUPU ) {
-		return round( ( static::taupu_koari( pow( self::KUPU_KATOA, ( int ) $kupu ) / 2 ) ), 2 );
+	public static function mokamoka( $kupu = self::KUPU, $kupu_katoa = self::KUPU_KATOA ) {
+		return round( ( static::taupu_koari( pow( ( int ) $kupu_katoa, ( int ) $kupu ) / 2 ) ), 2 );
 	}
     public function whangatekau() {
 		$naama = '';
@@ -50,12 +50,11 @@ class Whangaonokupu {
 				}
 			}
 		}
-		
 		# mod to total word list count
 		return $naama;
     }
     public function taupu_koari( $x ){
-        return ( log10( $x ) / log10( 2 ) );
+        return ( log10( $x ) / log10( 2 ) ) + 1;
     }
     public function whakaraukupu( $path ) {
 		$_rarangi_kupu = array();
