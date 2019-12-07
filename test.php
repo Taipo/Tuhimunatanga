@@ -23,15 +23,21 @@ $Tuhimunatanga = new Tuhimunatanga();
 			<div id="rohe_potae">
 			<div id="rohe_taniwha">
 					<div class="takai">
-											<H4>WHAKAATURANGA: Hanga he whakapiri hei haumaru papatono-taupangatanga.</H4>
-											<ul>
-												<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E15)">Moka-89.31</a> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
-												<li>E whakamunatia ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
-												<li>Moka-<?php echo Whangaonokupu::mokamoka( $Tuhimunatanga->kupu_katoa );?> te kahanga of te whangaono kupu</li>
-												<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
-												<li>I taapirihia he taitapa tupurangi.</li>
-											</ul>	
-					<br />
+								<H4>WHAKAATURANGA: Hanga he whakapiri hei haumaru papatono-taupangatanga.</H4>
+								<ul>
+									<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(62%5E15)">Moka-<?php echo Whangaonokupu::mokamoka( 15, 62 ); ?></a> te kahanga o te haatepe-waahitau tukutuku mo ia hanga-whakapiri</li>
+									<li>E whakamunatia ana nga whakapiri ia te aratau <i><?php echo strtoupper( $Tuhimunatanga::tu_aratuka() ); ?></i></li>
+									<li><a target = "_blank" href="https://www.wolframalpha.com/input/?i=log2(7776%5E<?php echo $Tuhimunatanga->kupu_katoa; ?>)">Moka-<?php echo Whangaonokupu::mokamoka( $Tuhimunatanga->kupu_katoa, 7776 ); ?></a> te kahanga of te whangaono kupu</li>
+									<li>Kaua e wareware te waahitau tukutuku me te kupuhipa. Mena kua ngarongaro enei, e kore e taea te wetemuna te whakapiri.</li>
+									<li>I taapirihia he taitapa tupurangi.</li>
+								</ul>
+								<br />
+								He Koowhiringa Ano: (kaore e whakahauanga)
+								<ol>
+									<li>Tuatahi, me taauta tenei mono-mai (<a target = "_blank" href="https://chrome.google.com/webstore/detail/encipher-it/fimncfoplhkgepigcpgjheeccdhemcfj?hl=ma">Chrome</a>, <a target = "_blank" href="https://addons.mozilla.org/en-US/firefox/addon/crypto-data/">Firefox</a>)</li>
+									<li>Tuarua, i mua ake tou whakapiringa, ia tenei mono-mai ka whakamuna tou whakapiri.</li>
+								</ol>
+								<br />
 								<p>
 								<?php if ( 'POST' !== $_SERVER[ 'REQUEST_METHOD' ] && isset( $_GET[ 'i' ] ) && strlen( $_GET[ 'i' ] ) == Tuhimunatanga::HAATEPE_ROA && !isset( $_POST[ 'kupuhipatuarua' ] ) ) {
 											$raraunga = new Raraunga();	
