@@ -17,7 +17,7 @@ class Tuhimunatanga {
 	public $taitara = 'Whakaaturanga :: Hanga tetehi whakapiri hei haumaru papatono-taupangatanga'; 
 	public $kupuhipa_aunoa, $karere_hapa, $haatepe_mutu, $tenei_haatepe, $karere_wetemunahia, $papahono_huri;
 	public $kupu_katoa;
-	
+
 	function Tuhimunatanga() {
 		date_default_timezone_set( 'NZ-CHAT' );
 		$raraunga = new Raraunga();
@@ -35,7 +35,7 @@ class Tuhimunatanga {
 				// Mau te kiko
 				$karerehuna_hou = $this->kore_rtk( $_POST[ 'haatepe' ], false );
 				// Mau waahikee
-				$this->waahikee = $this->kore_rtk( ( int ) $_POST[ 'paunga' ], true );
+				$this->waahikee = ( int ) $this->kore_rtk( $_POST[ 'paunga' ], true );
 				// Mau te roa o taitapa
 				$taitapa     = ( self::TAITAPA > strlen( $karerehuna_hou ) ) ? rand( 5, 1000) : 0;
 				// Mo te waahitau tukutuku tenei
@@ -277,7 +277,7 @@ class Tuhimunatanga {
 		$t_char = count( $aho ) - 1;
 		shuffle( $aho ); // Kaore e pai tenei taumaha mo te Tuhimunatanga
 		for( $x = 0; $x < $roa_a_haatepe; $x++ ) {
-			$rand_int = ( random_int( 0, ( $t_char * 10 ) ) % $t_char ); // Ko te kaha o tenei tuhimuna ko te random_int() tenei mo te teepu tirohia
+			$rand_int = ( random_int( 0, ( $t_char * 10 ) ) % $t_char ); // Ko te kaha o tenei tuhimuna ko te random_int() nei mo te teepu-tirohia
 			$haatepe = $haatepe . $aho[ $rand_int ];
 			shuffle( $aho );
 		}
