@@ -96,14 +96,14 @@ $Tuhimunatanga = new Tuhimunatanga();
 										<br />
 										<select style="width:780px"; name="paunga">
 											<option value="" disabled selected>Waa Pau</option>
-											<option value="0">Amuri paanui ka tuumata!</option>
-											<option value="600">Tekau Miniti</option>
-											<option value="3600">Kotahi Houra</option>
-											<option value="86400">Kotahi Ra</option>
-											<option value="604800">Kotahi Wiki</option>
-											<option value="2635200">Kotahi Marama</option>
-											<option value="31579200">Kotahi Tau</option>
-											<option value="3157920000">Ko Te Mutunga Kore</option>
+											<option value="0">1. Amuri paanui ka tuumata!</option>
+											<option value="600">2. Tekau Miniti</option>
+											<option value="3600">3. Kotahi Houra</option>
+											<option value="86400">4. Kotahi Ra</option>
+											<option value="604800">5. Kotahi Wiki</option>
+											<option value="2635200">6. Kotahi Marama</option>
+											<option value="31579200">7. Kotahi Tau</option>
+											<option value="3157920000">8. Ko Te Mutunga Kore</option>
 										</select><button type="submit" value="Auaha">Auaha</button>
 										</p>
 									</form>
